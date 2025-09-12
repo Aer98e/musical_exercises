@@ -1,0 +1,13 @@
+#ifndef EXERCISES_FUNTIONS_H
+#define EXERCISES_FUNTIONS_H
+#include "music_funtion.h"
+
+
+void byFormIntervals(int amount, int numElements);
+void byRecognizeScale(int amount, int numElements);
+void byRecognizeIntervals_Notes(int amount, int octaveMin=2, int octaveMax=7);
+void byRecognizeIntervals_Grades(int amount);
+void byWriteScales(int amount);
+void byWriteScales_Nova(int amount, Scale* nova);
+
+#endif

@@ -1,2 +1,7 @@
 .vscode/
 proyect_08052025/
+bin/
+build/
+build_o2/
+hashes/
+list_obj.txt
