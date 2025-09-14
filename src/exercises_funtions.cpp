@@ -56,23 +56,54 @@ void byWriteScales_Nova(int amount, Scale* nova){
 
 }
 
-void byRecognizeIntervalsGrades_Nova(int amount, Scale* nova){
-	int selectGrade = {};
-	int sizeGradeVector = dtMusic::gradeAwName.size();
+std::pair<std::string, int> compareIntervals(Note* first, Note* second){
+	int generalName { (second->getGradeValue() - first->getGradeValue()) + 1};
+	if (generalName < 2){ generalName+=7; }
 
+	IntervalNetwork &net = IntervalNetwork::getInstance();
+	switch (generalName) {
+		case 4: case 5: case 8:
+			net.selectMode(IntervalNetwork::Mode::Justo);
+			break;
+		default:
+			net.selectMode(IntervalNetwork::Mode::Mayor);
+	}
+
+	int naturalValue = dtMusic::valueIntervales[generalName];
+	// std::cout <<"Se seleccionó el grado " <<generalName
+	// <<" con valor natural de " <<naturalValue <<'\n';
+
+	int realValue = second->getGeneralPitch() - first->getGeneralPitch();
+	if (realValue < 0) { realValue += 12; }
+	// std::cout <<"El valor alto es: " <<second->getGeneralPitch() <<" y"
+	// <<"el valor bajo es: " <<first->getGeneralPitch() <<"\n";
+
+	// std::cout <<"El valor real es " <<realValue<<"\n";
+
+	int desviation = realValue-naturalValue;
+	if (desviation == -12) { desviation = 0; }
+
+	std::string specificName = net.calculateInterval(desviation);
+	
+
+	return {specificName, generalName};
+}
+
+void byRecognizeIntervalsGrades_Nova(int amount, Scale* nova){
 	for(amount; amount > 0; amount--){
 			auto[scaleName, scalePattern] = getRandPattern();
 			nova -> applyScalePattern(scalePattern);
-			nova -> randNote();
-			Note* firtNote = nova -> getSelectedNote();
-			nova -> randNote();
-			Note* secondNote = nova -> getSelectedNote();
+
+			Note* firstNote = nova -> randNote();
+			Note* secondNote = nova -> randNote();
 
 			std::cout <<"Dada la escala " <<scaleName
 			<<" mensiona el intervalo entre los grados "
-			<<firtNote -> getGradeName() <<" y " <<secondNote -> getGradeName()
+			<<firstNote -> getGradeName() <<" y " <<secondNote -> getGradeName()
 			<<"\n";
-			
+
+			auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
+			std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
 	}
 	
 }
@@ -94,6 +125,27 @@ void byRecognizeIntervals_Notes(int amount, int octaveMin, int octaveMax){
 			std::cout << " y "<< dtMusic::noteNames[selectNote] << " "<< selecOctave << "\n";
 	}
 	
+}
+
+void byRecognizeIntervalsNotes_Nova(int amount, Scale* nova, int octaveMin, int octaveMax){
+	for(amount; amount > 0; amount--){
+		nova -> randNote();
+		int variation { generate_rand_number(1, -1) };
+
+		auto[scaleName, scalePattern] = getRandPattern();
+		nova -> applyScalePattern(scalePattern, variation);
+
+		Note* firstNote = nova -> randNote();
+		Note* secondNote = nova -> randNote();
+
+		std::cout <<"Cual es el intervalo entre " << firstNote->getName()
+		<<" " << generate_rand_number (octaveMax, octaveMin)
+		<<" y " <<secondNote->getName() <<" "
+		<<generate_rand_number (octaveMax, octaveMin) << "\n";
+
+		auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
+		std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
+	}
 }
 
 void byRecognizeScale(int amount, int numElements){

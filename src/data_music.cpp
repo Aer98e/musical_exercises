@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <map>
 
 namespace dtMusic
 {
@@ -59,4 +60,10 @@ namespace dtMusic
         {"Menor Armonica", {2, 1, 2, 2, 1, 3, 1}},
         {"Menor Melodica", {2, 1, 2, 2, 2, 2, 1}},
     };
+
+    std::map<int, int> valueIntervales {
+	{1, 1}, {2, 2},	{3, 4},
+	{4, 5},	{5, 7},	{6, 9},
+	{7, 11}, {8, 12}
+}; 
 }

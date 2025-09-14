@@ -23,8 +23,6 @@ class Note{
 
         std::string getName();
 
-        short getValuePitch();
-
         std::string getGradeName();
         short getGradeValue();
         void changeGrade(int newValue);
@@ -35,9 +33,11 @@ class Note{
         void modifyNextPtr(Note* newPtr);
         void modifyPreviousPtr(Note* newPtr);
 
+        short getValuePitch();
         void setPitchVariation(short variation);
         short getPitchVariation();
         void resetPitchVariation();
+        int getGeneralPitch();
         void show();
 };
 
@@ -65,6 +65,63 @@ class Scale {
 
         void applyScalePattern(std::vector<int> pattern, int initialModification = 0);
         void resetPitchVariations();
+};
+
+class specificIntervalName {
+private:
+    std::string name;
+    specificIntervalName* up;
+    specificIntervalName* down;
+
+public:
+    // Constructor
+    specificIntervalName(std::string name,
+                         specificIntervalName* up = nullptr,
+                         specificIntervalName* down = nullptr);
+
+    // Getters
+    std::string getName() const;
+    specificIntervalName* getUp() const;
+    specificIntervalName* getDown() const;
+
+    // Setters
+    void setUp(specificIntervalName* newUp);
+    void setDown(specificIntervalName* newDown);
+};
+
+class IntervalNetwork {
+private:
+    // Objetos de intervalos
+    specificIntervalName major;
+    specificIntervalName minor;
+    specificIntervalName just;
+    specificIntervalName augmented;
+    specificIntervalName disminished;
+
+    // Estado actual
+    specificIntervalName* intervalSelected;
+
+    // Constructor privado (Singleton)
+    IntervalNetwork();
+
+    // Evitar copia y asignación
+    IntervalNetwork(const IntervalNetwork&) = delete;
+    IntervalNetwork& operator=(const IntervalNetwork&) = delete;
+
+public:
+    enum class Mode { Mayor, Justo };
+    // Obtener la única instancia
+    static IntervalNetwork& getInstance();
+
+    // Selección de modo
+    void selectMode(Mode mode);
+
+    // Navegación
+    void up();
+    void down();
+
+    // Cálculo
+    std::string calculateInterval(int desviation);
 };
 
 std::vector <int> addPattern(int init, std::vector<int> pattern);

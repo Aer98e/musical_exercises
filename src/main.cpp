@@ -57,11 +57,11 @@ int main(){
 				break;
 			
 			case 2:
-				byRecognizeIntervals_Grades(amountExercises);
+				byRecognizeIntervalsGrades_Nova(amountExercises, nova);
 				break;
 			
 			case 3:
-				byRecognizeIntervals_Notes(amountExercises);
+				byRecognizeIntervalsNotes_Nova(amountExercises, nova);
 				break;
 
 			case 4: {

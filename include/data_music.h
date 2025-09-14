@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <unordered_map>
+#include <map>
 
 namespace dtMusic
 {
@@ -51,5 +52,7 @@ namespace dtMusic
 	extern std::vector<std::string> directions;
 
 	extern std::unordered_map<std::string, std::vector<int>> Patterns;
+
+	extern std::map<int, int> valueIntervales;
 }
 #endif

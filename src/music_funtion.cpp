@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <map>
 
 #include <stdexcept>
 
@@ -64,6 +65,7 @@ short Note::getValuePitch(){ return valuePitch; }
 void Note::setPitchVariation(short variation){ pitchVariation = variation; }
 short Note::getPitchVariation(){ return pitchVariation; }
 void Note::resetPitchVariation(){ pitchVariation = 0; }
+int Note::getGeneralPitch(){ return pitchVariation + valuePitch; }
 
 void Note::show(){
 	std::cout<<"Note (name):"<<name
@@ -230,6 +232,111 @@ std::pair<std::string, std::vector<int>> getRandPattern(){
 	std::advance(iter, randSelect);
 	return {iter -> first, iter -> second};
 }
+
+// Constructor
+specificIntervalName::specificIntervalName(std::string name,
+                                           specificIntervalName* up,
+                                           specificIntervalName* down)
+    : name(std::move(name)), up(up), down(down) {}
+
+// Getters
+std::string specificIntervalName::getName() const {
+    return name;
+}
+
+specificIntervalName* specificIntervalName::getUp() const {
+    return up;
+}
+
+specificIntervalName* specificIntervalName::getDown() const {
+    return down;
+}
+
+// Setters
+void specificIntervalName::setUp(specificIntervalName* newUp) {
+    up = newUp;
+}
+
+void specificIntervalName::setDown(specificIntervalName* newDown) {
+    down = newDown;
+}
+
+// Constructor
+IntervalNetwork::IntervalNetwork()
+    : major("Mayor"),
+      minor("Menor"),
+      just("Justo"),
+      augmented("Aumentado"),
+      disminished("Disminuido"),
+      intervalSelected(nullptr)
+{
+    // Relaciones básicas entre intervalos
+    major.setUp(&augmented);
+    major.setDown(&minor);
+
+    minor.setUp(&major);
+    minor.setDown(&disminished);
+
+    just.setDown(&disminished);
+    just.setUp(&augmented);
+}
+
+// Singleton
+IntervalNetwork& IntervalNetwork::getInstance() {
+    static IntervalNetwork instance;
+    return instance;
+}
+
+// Selección de modo
+void IntervalNetwork::selectMode(Mode mode) {
+    switch (mode) {
+        case Mode::Mayor:
+            intervalSelected = &major;
+            disminished.setUp(&minor);
+            augmented.setDown(&major);
+            break;
+
+        case Mode::Justo:
+            intervalSelected = &just;
+            disminished.setUp(&just);
+            augmented.setDown(&just);
+            break;
+    }
+}
+
+// Navegar hacia arriba
+void IntervalNetwork::up() {
+    auto temp = intervalSelected->getUp();
+    if (!temp) throw std::runtime_error("No existe intervalo más alto.");
+    intervalSelected = temp;
+}
+
+// Navegar hacia abajo
+void IntervalNetwork::down() {
+    auto temp = intervalSelected->getDown();
+    if (!temp) throw std::runtime_error("No existe intervalo más bajo.");
+    intervalSelected = temp;
+}
+
+// Calcular intervalo
+std::string IntervalNetwork::calculateInterval(int desviation) {
+    if (intervalSelected == nullptr) {
+        throw std::runtime_error("No se ha seleccionado ningún modo.");
+    }
+
+    while (desviation != 0) {
+        if (desviation < 0) {
+            down();
+            desviation += 1;
+        } else {
+            up();
+            desviation -= 1;
+        }
+    }
+
+    return intervalSelected->getName();
+}
+
 
 // struct GenerateScale{
 // 	std::vector <int> addPattern(int init, std::vector<int> pattern){
