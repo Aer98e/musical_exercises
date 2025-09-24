@@ -65,5 +65,9 @@ namespace dtMusic
 	{1, 1}, {2, 2},	{3, 4},
 	{4, 5},	{5, 7},	{6, 9},
 	{7, 11}, {8, 12}
-}; 
+    }; 
+
+    std::vector<std::string> typesAugmentChords {
+        "Alemena", "Italiana", "Suiza", "Francesa"
+    };
 }

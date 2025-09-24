@@ -1,5 +1,4 @@
 #include "exercises_funtions.h"
-#include "music_funtion.h"
 
 #include <iostream>
 #include <vector>
@@ -13,7 +12,8 @@ void printMenu (){
 	std::cout << "2) Ejercicios de intervalos(GRADOS).\n";
 	std::cout << "3) Ejercicios de intervalos(NOTAS).\n";
 	std::cout << "4) Ejercicios para reconocer escalas.\n";
-	std::cout << "5) Ejercicios para reconocer intervalos\n\n";
+	std::cout << "5) Ejercicios para reconocer intervalos.\n";
+	std::cout << "6) Ejercicios para sexta aumentada.\n\n";
 }
 
 std::pair<short, short> getOptions(){
@@ -64,7 +64,7 @@ int main(){
 				byRecognizeIntervalsNotes_Nova(amountExercises, nova);
 				break;
 
-			case 4: {
+			case 4: { 
 				short amountElements {requestAmountElements()};
 				byRecognizeScale(amountExercises, amountElements);
 				break;
@@ -75,6 +75,10 @@ int main(){
 				byFormIntervals(amountExercises, amountElements);
 				break;
 			}
+
+			case 6: 
+				byFormAugmentedSixthChords(amountExercises, nova);
+				break;
 
 			default:
 				system("cls");

@@ -1,13 +1,14 @@
 #include "exercises_funtions.h"
 #include "data_music.h"
-#include "music_funtion.h"
+
+#include "note.h"
+#include "scale.h"
+#include "music_utils.h"
+#include "interval_network.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
-
-
-int generate_rand_number(int max, int min);
 
 void byWriteScales(int amount){
 	struct select {
@@ -63,10 +64,10 @@ std::pair<std::string, int> compareIntervals(Note* first, Note* second){
 	IntervalNetwork &net = IntervalNetwork::getInstance();
 	switch (generalName) {
 		case 4: case 5: case 8:
-			net.selectMode(IntervalNetwork::Mode::Justo);
+			net.selectMode(Mode::Justo);
 			break;
 		default:
-			net.selectMode(IntervalNetwork::Mode::Mayor);
+			net.selectMode(Mode::Mayor);
 	}
 
 	int naturalValue = dtMusic::valueIntervales[generalName];
@@ -111,7 +112,7 @@ void byRecognizeIntervalsGrades_Nova(int amount, Scale* nova){
 void byRecognizeIntervals_Notes(int amount, int octaveMin, int octaveMax){
 	int selectNote {};
 	int selecOctave {};
-	int sizeNotesList  (dtMusic::noteNames.size());
+	int sizeNotesList = static_cast<int>(dtMusic::noteNames.size());
 
 	for(amount; amount > 0; amount--){
 			selectNote = generate_rand_number(sizeNotesList-1);
@@ -151,7 +152,7 @@ void byRecognizeIntervalsNotes_Nova(int amount, Scale* nova, int octaveMin, int 
 void byRecognizeScale(int amount, int numElements){
 	int selectNote {};
 	int counter {numElements};
-	int sizeNotesList (dtMusic::noteNames.size());
+	int sizeNotesList {static_cast<int>(dtMusic::noteNames.size())};
 	
 	for(amount; amount > 0; amount--){
 		selectNote = generate_rand_number(sizeNotesList-1);
@@ -171,9 +172,9 @@ void byRecognizeScale(int amount, int numElements){
 
 void byFormIntervals(int amount, int numElements){
 	int selectNote {};
-	int sizeNotesList (dtMusic::noteNames.size());
+	int sizeNotesList {static_cast<int>(dtMusic::noteNames.size())};
 	int selectInterval {};
-	int sizeIntervalsList (dtMusic::intervals.size());
+	int sizeIntervalsList ({static_cast<int>(dtMusic::intervals.size())});
 	int counter {numElements};
 	
 	for(amount; amount > 0; amount--){
@@ -189,5 +190,23 @@ void byFormIntervals(int amount, int numElements){
 
 		counter = numElements;
 		std::cout<<"\n";
+	}
+}
+
+void byFormAugmentedSixthChords(int amount, Scale* nova){
+	for (int i=0; i<amount; i++){
+		nova -> randNote();
+		Note* note = nova -> getSelectedNote();
+
+		int alteration = generate_rand_number(0,-1);
+		note -> setPitchVariation((short)alteration);
+
+		int limit {(int)dtMusic::typesAugmentChords.size()};
+		int selectChord = generate_rand_number(limit-1);
+
+		std::cout <<"Escribe un acorde de sexta aumentada "
+		<<dtMusic::typesAugmentChords[selectChord]
+		<<" con " <<note->getName() <<" como fundamental.\n";
+		std::cin.get();
 	}
 }

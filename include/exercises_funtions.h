@@ -1,6 +1,6 @@
-#ifndef EXERCISES_FUNTIONS_H
-#define EXERCISES_FUNTIONS_H
-#include "music_funtion.h"
+#pragma once
+#include "scale.h"
+#include "note.h"
 
 
 void byFormIntervals(int amount, int numElements);
@@ -11,5 +11,4 @@ void byRecognizeIntervalsNotes_Nova(int amount, Scale* nova, int octaveMin=2, in
 void byRecognizeIntervalsGrades_Nova(int amount, Scale* nova);
 void byWriteScales(int amount);
 void byWriteScales_Nova(int amount, Scale* nova);
-
-#endif
+void byFormAugmentedSixthChords(int amount, Scale* nova);

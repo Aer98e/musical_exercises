@@ -54,5 +54,7 @@ namespace dtMusic
 	extern std::unordered_map<std::string, std::vector<int>> Patterns;
 
 	extern std::map<int, int> valueIntervales;
+
+	extern std::vector<std::string> typesAugmentChords;
 }
 #endif
