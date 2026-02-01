@@ -1,4 +1,4 @@
-#include "exercises_funtions.h"
+#include "exercises_functions.h"
 #include "data_music.h"
 
 #include "note.h"
@@ -20,7 +20,7 @@ void byWriteScales(int amount){
 	
 	select sel;
 
-	for(amount; amount > 0; amount--){
+	for(; amount > 0; amount--){
 			sel.note = generate_rand_number(dtMusic::noteNames.size()-1);
 			sel.grade = generate_rand_number(dtMusic::gradeAwName.size()-1);
 			sel.scale = generate_rand_number(dtMusic::scalesNameTypes.size()-1);
@@ -37,7 +37,7 @@ void byWriteScales(int amount){
 void byWriteScales_Nova(int amount, Scale* nova){
 	int direction {};
 
-	for(amount; amount > 0; amount--){
+	for(; amount > 0; amount--){
 			nova -> randNote();
 			auto[scaleName, scalePattern] = getRandPattern();
 			int variation { generate_rand_number(1, -1) };
@@ -52,7 +52,7 @@ void byWriteScales_Nova(int amount, Scale* nova){
 			std::cout << " con "<<temp -> getName()<< " como ";
 			std::cout << temp->getGradeName() << "\n";
 
-			// nova->print();
+			nova->print();
 	}
 
 }
@@ -91,7 +91,7 @@ std::pair<std::string, int> compareIntervals(Note* first, Note* second){
 }
 
 void byRecognizeIntervalsGrades_Nova(int amount, Scale* nova){
-	for(amount; amount > 0; amount--){
+	for(; amount > 0; amount--){
 			auto[scaleName, scalePattern] = getRandPattern();
 			nova -> applyScalePattern(scalePattern);
 
@@ -103,8 +103,9 @@ void byRecognizeIntervalsGrades_Nova(int amount, Scale* nova){
 			<<firstNote -> getGradeName() <<" y " <<secondNote -> getGradeName()
 			<<"\n";
 
-			auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
-			std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
+			std::cin.get();
+			// auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
+			// std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
 	}
 	
 }
@@ -114,7 +115,7 @@ void byRecognizeIntervals_Notes(int amount, int octaveMin, int octaveMax){
 	int selecOctave {};
 	int sizeNotesList = static_cast<int>(dtMusic::noteNames.size());
 
-	for(amount; amount > 0; amount--){
+	for(; amount > 0; amount--){
 			selectNote = generate_rand_number(sizeNotesList-1);
 			selecOctave = generate_rand_number (octaveMax, octaveMin);
 
@@ -129,7 +130,7 @@ void byRecognizeIntervals_Notes(int amount, int octaveMin, int octaveMax){
 }
 
 void byRecognizeIntervalsNotes_Nova(int amount, Scale* nova, int octaveMin, int octaveMax){
-	for(amount; amount > 0; amount--){
+	for(; amount > 0; amount--){
 		nova -> randNote();
 		int variation { generate_rand_number(1, -1) };
 
@@ -143,9 +144,11 @@ void byRecognizeIntervalsNotes_Nova(int amount, Scale* nova, int octaveMin, int 
 		<<" " << generate_rand_number (octaveMax, octaveMin)
 		<<" y " <<secondNote->getName() <<" "
 		<<generate_rand_number (octaveMax, octaveMin) << "\n";
+		// std::cout <<"El nobre de la escala es " <<scaleName <<"\n";
 
-		auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
-		std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
+		std::cin.get();
+		// auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
+		// std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
 	}
 }
 
@@ -154,12 +157,12 @@ void byRecognizeScale(int amount, int numElements){
 	int counter {numElements};
 	int sizeNotesList {static_cast<int>(dtMusic::noteNames.size())};
 	
-	for(amount; amount > 0; amount--){
+	for(; amount > 0; amount--){
 		selectNote = generate_rand_number(sizeNotesList-1);
 
 		std::cout << "Que escala contiene " << dtMusic::noteNames[selectNote];
 
-		for(counter; counter > 1; counter--){
+		for(; counter > 1; counter--){
 			selectNote = generate_rand_number(sizeNotesList-1);
 
 			std::cout << ", " << dtMusic::noteNames[selectNote];
@@ -174,16 +177,16 @@ void byFormIntervals(int amount, int numElements){
 	int selectNote {};
 	int sizeNotesList {static_cast<int>(dtMusic::noteNames.size())};
 	int selectInterval {};
-	int sizeIntervalsList ({static_cast<int>(dtMusic::intervals.size())});
+	int sizeIntervalsList { static_cast<int>( dtMusic::intervals.size() ) };
 	int counter {numElements};
 	
-	for(amount; amount > 0; amount--){
+	for(; amount > 0; amount--){
 		selectNote = generate_rand_number(sizeNotesList-1);
 		selectInterval = generate_rand_number(sizeIntervalsList-1);
 
 		std::cout << "Con " << dtMusic::noteNames[selectNote] << " forma: " << dtMusic::intervals[selectInterval];
 		
-		for(counter; counter > 1; counter--){
+		for(; counter > 1; counter--){
 			selectInterval = generate_rand_number(sizeIntervalsList-1);
 			std::cout<< ", " <<dtMusic::intervals[selectInterval];
 		}

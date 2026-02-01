@@ -18,6 +18,8 @@ IntervalNetwork::IntervalNetwork()
       just("Justo"),
       augmented("Aumentado"),
       disminished("Disminuido"),
+      doubleAumented("Doble aumentado"),
+      doubleDisminished("Doble disminuido"),
       intervalSelected(nullptr)
 {
     major.setUp(&augmented);
@@ -26,8 +28,14 @@ IntervalNetwork::IntervalNetwork()
     minor.setUp(&major);
     minor.setDown(&disminished);
 
-    just.setDown(&disminished);
     just.setUp(&augmented);
+    just.setDown(&disminished);
+
+    disminished.setDown(&doubleDisminished);
+    augmented.setUp(&doubleAumented);    
+    
+    doubleDisminished.setUp(&disminished);
+    doubleAumented.setDown(&augmented);
 }
 
 IntervalNetwork& IntervalNetwork::getInstance() {
@@ -49,6 +57,7 @@ void IntervalNetwork::selectMode(Mode mode) {
             augmented.setDown(&just);
             break;
     }
+    workingMode = mode;
 }
 
 void IntervalNetwork::up() {
@@ -67,14 +76,18 @@ std::string IntervalNetwork::calculateInterval(int desviation) {
     if (intervalSelected == nullptr) {
         throw std::runtime_error("No se ha seleccionado ningún modo.");
     }
-    while (desviation != 0) {
-        if (desviation < 0) {
+
+    if (desviation < 0){
+        for (int i; i<std::abs(desviation); i++){
             down();
-            desviation += 1;
-        } else {
+        }
+    }else{
+        for (int i; i<std::abs(desviation); i++){
             up();
-            desviation -= 1;
         }
     }
+
     return intervalSelected->getName();
 }
+
+Mode IntervalNetwork::getMode(){ return workingMode; }

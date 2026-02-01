@@ -1,4 +1,4 @@
-#include "exercises_funtions.h"
+#include "exercises_functions.h"
 
 #include <iostream>
 #include <vector>

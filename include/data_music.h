@@ -12,9 +12,9 @@ namespace dtMusic
 	class Nota_c
 	{
 		private:
-			int alteration;
-			const int pitchValue;
 			std::string name;
+			const int pitchValue;
+			int alteration;
 
 		public:
 			Nota_c(std::string name , int natural): name(name), pitchValue(natural), alteration(natural){}

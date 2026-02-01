@@ -11,6 +11,8 @@ public:
     void selectNextNote(int steps = 1);
     void selectPreviousNote(int steps = 1);
     Note* getSelectedNote();
+    void goBeginning();
+    Note* getBeginning();
     
     void reassignGrades(short value);
     void addNote(std::string name, int natural);

@@ -28,5 +28,6 @@ std::pair<std::string, std::vector<int>> getRandPattern() {
     int randSelect { generate_rand_number(sizePattern - 1) };
     auto iter { dtMusic::Patterns.begin() };
     std::advance(iter, randSelect);
-    return {iter->first, iter->second};
+    return {iter->first, iter->second}; // first es un string con el nombre del patrón, y second es
+                                        // un array con los enteros que representan al patrón.
 }

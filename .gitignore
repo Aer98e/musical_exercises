@@ -5,3 +5,5 @@ build/
 build_o2/
 hashes/
 list_obj.txt
+documentation_route.md
+template_documentation.md

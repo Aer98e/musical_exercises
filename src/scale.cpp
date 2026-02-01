@@ -50,6 +50,18 @@ void Scale::reassignGrades(short value) {
     }
 }
 
+Note* Scale::getBeginning(){
+    Note *temp = selectedNote;
+    while ( temp->getGradeValue() != 1 ){
+        temp = temp->getNextPtr();
+    }
+    return temp;
+}
+
+void Scale::goBeginning(){
+    selectedNote = getBeginning();
+}
+
 void Scale::addNote(std::string name, int natural) {
     Note* new_note = new Note(name, natural);
 
@@ -73,7 +85,7 @@ void Scale::addNote(std::string name, int natural) {
 short Scale::getSize() { return size; }
 
 void Scale::applyScalePattern(std::vector<int> pattern, int initialModification) {
-    if (pattern.size() != size) {
+    if (static_cast<int>(pattern.size()) != size) {
         throw std::invalid_argument("El tamaño del patrón no es aplicable en la escala.");
     }
     int verification = 0;
@@ -110,10 +122,8 @@ void Scale::resetPitchVariations() {
 }
 
 void Scale::print() {
-    Note* temp = selectedNote;
-    while (temp->getGradeValue() != 1) {
-        temp = temp->getNextPtr();
-    }
+    Note* temp = getBeginning();
+
     for (int i = 0; i < size; i++) {
         std::cout << temp->getName() << "("
                   << temp->getGradeName() << ")" << " - ";
@@ -123,13 +133,13 @@ void Scale::print() {
 }
 
 std::vector<int> Scale::listPitchValues() {
-    std::vector<int> numbers;
+    std::vector<int> pitchValues;
     Note* temp = selectedNote;
     for (int i = 0; i < size; i++) {
-        numbers.push_back(temp->getValuePitch());
+        pitchValues.push_back(temp->getValuePitch());
         temp = temp->getNextPtr();
     }
-    return numbers;
+    return pitchValues;
 }
 
 Note* Scale::randNote() {

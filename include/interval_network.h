@@ -29,11 +29,15 @@ public:
     void up();
     void down();
     std::string calculateInterval(int desviation);
+    Mode getMode();
 private:
+    Mode workingMode;
     specificIntervalName major;
     specificIntervalName minor;
     specificIntervalName just;
     specificIntervalName augmented;
     specificIntervalName disminished;
+    specificIntervalName doubleAumented;
+    specificIntervalName doubleDisminished;
     specificIntervalName* intervalSelected;
 };
