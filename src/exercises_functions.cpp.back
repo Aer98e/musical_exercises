@@ -9,15 +9,33 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <nlohmann/json.hpp>
 
-using json = nlohmann::json;
+void byWriteScales(int amount){
+	struct select {
+		int note {};
+		int grade {};
+		int scale {};
+		int direction {};
+	};
+	
+	select sel;
 
-Scale* nova = Scale::getScale();
+	for(; amount > 0; amount--){
+			sel.note = generate_rand_number(dtMusic::noteNames.size()-1);
+			sel.grade = generate_rand_number(dtMusic::gradeAwName.size()-1);
+			sel.scale = generate_rand_number(dtMusic::scalesNameTypes.size()-1);
+			sel.direction = generate_rand_number(dtMusic::directions.size()-1);
 
-std::string byWriteScales_Nova(int amount){
+			std::cout <<"Escribe una escala " <<dtMusic::scalesNameTypes[sel.scale];
+			std::cout <<" " << dtMusic::directions[sel.direction];
+			std::cout <<" con " << dtMusic::noteNames[sel.note] <<" como ";
+			std::cout <<dtMusic::gradeAwName[sel.grade] <<"\n";
+	}
+
+}
+
+void byWriteScales_Nova(int amount, Scale* nova){
 	int direction {};
-	json results = json::array();
 
 	for(; amount > 0; amount--){
 		nova -> randNote();
@@ -29,18 +47,14 @@ std::string byWriteScales_Nova(int amount){
 
 		direction = generate_rand_number(dtMusic::directions.size()-1);
 
+		std::cout << "Escribe una escala " << scaleName;
+		std::cout << " " << dtMusic::directions[direction];
+		std::cout << " con "<<temp -> getName()<< " como ";
+		std::cout << temp->getGradeName() << "\n";
 
-		json item = {
-            {"scaleName", scaleName},
-            {"direction", dtMusic::directions[direction]},
-            {"noteName", temp -> getName()},
-            {"noteGrade", temp -> getGradeName()},
-            {"scale", nova -> print()}
-        };
-
-        results.push_back(item);
+		nova->print();
 	}
-	return results.dump();
+
 }
 
 std::pair<std::string, int> compareIntervals(Note* first, Note* second){
@@ -76,9 +90,7 @@ std::pair<std::string, int> compareIntervals(Note* first, Note* second){
 	return {specificName, generalName};
 }
 
-std::string byRecognizeIntervalsGrades_Nova(int amount){
-	json results = json::array();
-
+void byRecognizeIntervalsGrades_Nova(int amount, Scale* nova){
 	for(; amount > 0; amount--){
 			auto[scaleName, scalePattern] = getRandPattern();
 			nova -> applyScalePattern(scalePattern);
@@ -86,23 +98,38 @@ std::string byRecognizeIntervalsGrades_Nova(int amount){
 			Note* firstNote = nova -> randNote();
 			Note* secondNote = nova -> randNote();
 
-			auto [generalName, specificName] = compareIntervals(firstNote, secondNote);
-			json item = {
-				{"scaleName", scaleName},
-				{"firstGrade", firstNote -> getGradeName()},
-				{"secondGrade", secondNote -> getGradeName()},
-				{"ansGeneralName", generalName},
-				{"ansSpecificName",specificName)}
-			};
-			results.push_back(item);
+			std::cout <<"Dada la escala " <<scaleName
+			<<" mensiona el intervalo entre los grados "
+			<<firstNote -> getGradeName() <<" y " <<secondNote -> getGradeName()
+			<<"\n";
+
+			std::cin.get();
+			// auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
+			// std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
 	}
-	return results.dump();
 	
 }
 
-std::string byRecognizeIntervalsNotes_Nova(int amount, int octaveMin, int octaveMax){
-	json results = json::array();
+void byRecognizeIntervals_Notes(int amount, int octaveMin, int octaveMax){
+	int selectNote {};
+	int selecOctave {};
+	int sizeNotesList = static_cast<int>(dtMusic::noteNames.size());
 
+	for(; amount > 0; amount--){
+			selectNote = generate_rand_number(sizeNotesList-1);
+			selecOctave = generate_rand_number (octaveMax, octaveMin);
+
+			std::cout << "Intervalo entre "<< dtMusic::noteNames[selectNote] <<" "<< selecOctave;
+			
+			selectNote = generate_rand_number(sizeNotesList-1);
+			selecOctave=generate_rand_number(octaveMax, octaveMin);
+			
+			std::cout << " y "<< dtMusic::noteNames[selectNote] << " "<< selecOctave << "\n";
+	}
+	
+}
+
+void byRecognizeIntervalsNotes_Nova(int amount, Scale* nova, int octaveMin, int octaveMax){
 	for(; amount > 0; amount--){
 		nova -> randNote();
 		int variation { generate_rand_number(1, -1) };
@@ -113,17 +140,16 @@ std::string byRecognizeIntervalsNotes_Nova(int amount, int octaveMin, int octave
 		Note* firstNote = nova -> randNote();
 		Note* secondNote = nova -> randNote();
 
-		json item = {
-			{"firstNote", firstNote->getName},
-			{"secondNote", secondNote->getName},
-			{"firstOctave", generate_rand_number(octaveMax, octaveMin)},
-			{"secondOctave",  generate_rand_number(octaveMax, octaveMin)}
-		};
+		std::cout <<"Cual es el intervalo entre " << firstNote->getName()
+		<<" " << generate_rand_number (octaveMax, octaveMin)
+		<<" y " <<secondNote->getName() <<" "
+		<<generate_rand_number (octaveMax, octaveMin) << "\n";
+		// std::cout <<"El nobre de la escala es " <<scaleName <<"\n";
 
-		results.push_back(item);
+		std::cin.get();
+		// auto[specificName, generalName] = compareIntervals(firstNote, secondNote);
+		// std::cout <<"El intervalo es " <<generalName <<" " <<specificName <<"\n\n";
 	}
-
-	return results.dump();
 }
 
 void byRecognizeScale(int amount, int numElements){
@@ -147,38 +173,30 @@ void byRecognizeScale(int amount, int numElements){
 	}
 }
 
-std::string byFormIntervals(int amount, int numElements){
-	int randIdxNote {};
+void byFormIntervals(int amount, int numElements){
+	int selectNote {};
 	int sizeNotesList {static_cast<int>(dtMusic::noteNames.size())};
+	int selectInterval {};
 	int sizeIntervalsList { static_cast<int>( dtMusic::intervals.size() ) };
 	int counter {numElements};
 	
-	json results = json::array();
-	
 	for(; amount > 0; amount--){
-		randIdxNote = generate_rand_number(sizeNotesList-1);
+		selectNote = generate_rand_number(sizeNotesList-1);
+		selectInterval = generate_rand_number(sizeIntervalsList-1);
 
-		json intervals = json::array();
+		std::cout << "Con " << dtMusic::noteNames[selectNote] << " forma: " << dtMusic::intervals[selectInterval];
 		
-		for(;counter>1;counter--){
-			randIdxInterval = generate_rand_number(sizeIntervalsList-1);
-			intervals.push_back(dtMusic::intervals[randIdxInterval]);
+		for(; counter > 1; counter--){
+			selectInterval = generate_rand_number(sizeIntervalsList-1);
+			std::cout<< ", " <<dtMusic::intervals[selectInterval];
 		}
 
-		json item = {
-			{"noteName", dtMusic::noteNames[randIdxNote]},
-			{"intervals", intervals}
-		};
-
-		results.push_back(item);
 		counter = numElements;
+		std::cout<<"\n";
 	}
-	return results.dump();
 }
 
-std::string byFormAugmentedSixthChords_Nova(int amount){
-	json results = json::array();
-
+void byFormAugmentedSixthChords(int amount, Scale* nova){
 	for (int i=0; i<amount; i++){
 		nova -> randNote();
 		Note* note = nova -> getSelectedNote();
@@ -189,12 +207,9 @@ std::string byFormAugmentedSixthChords_Nova(int amount){
 		int limit {(int)dtMusic::typesAugmentChords.size()};
 		int selectChord = generate_rand_number(limit-1);
 
-		json item = {
-			{"typeChord", dtMusic::typesAugmentChords[selectChord]},
-			{"noteName", note->getName()} 
-		};
-
-		results.push_back(item);
+		std::cout <<"Escribe un acorde de sexta aumentada "
+		<<dtMusic::typesAugmentChords[selectChord]
+		<<" con " <<note->getName() <<" como fundamental.\n";
+		std::cin.get();
 	}
-	return results.dump();
 }

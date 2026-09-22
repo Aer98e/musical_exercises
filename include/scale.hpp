@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "note.h"
+
+class Note;
 
 class Scale {
 public:

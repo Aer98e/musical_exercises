@@ -1,6 +1,7 @@
 #include "note.h"
 #include <iostream>
 #include <stdexcept>
+#include <string>
 
 Note::Note(std::string name, int natural, Note* next, Note* previous)
     : name(name), valuePitch(natural), next(next), previous(previous),
@@ -47,11 +48,13 @@ Note* Note::getNextPtr() { return next; }
 Note* Note::getPreviousPtr() { return previous; }
 void Note::modifyNextPtr(Note* newPtr) { next = newPtr; }
 void Note::modifyPreviousPtr(Note* newPtr) { previous = newPtr; }
+
 short Note::getValuePitch() { return static_cast<short> (valuePitch); }
 void Note::setPitchVariation(short variation) { pitchVariation = variation; }
 short Note::getPitchVariation() { return pitchVariation; }
 void Note::resetPitchVariation() { pitchVariation = 0; }
 int Note::getGeneralPitch() { return pitchVariation + valuePitch; }
+
 void Note::show() {
     std::cout << "Note (name):" << name
               << " ,(valuePitch):" << valuePitch

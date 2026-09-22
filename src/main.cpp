@@ -6,48 +6,58 @@
 #include <stdlib.h>
 #include <utility>
 
+using std::cout;
+using std::endl;
+using std::cin;
+
 void printMenu (){
-	std::cout << "\t====EJERCICIOS DE TEORIA MUSICAL====\n\n";
-	std::cout << "1) Ejercicios para escalas.\n";
-	std::cout << "2) Ejercicios de intervalos(GRADOS).\n";
-	std::cout << "3) Ejercicios de intervalos(NOTAS).\n";
-	std::cout << "4) Ejercicios para reconocer escalas.\n";
-	std::cout << "5) Ejercicios para reconocer intervalos.\n";
-	std::cout << "6) Ejercicios para sexta aumentada.\n\n";
+	cout << "\t====EJERCICIOS DE TEORIA MUSICAL====\n\n";
+	cout << "1) Ejercicios para escalas.\n";
+	cout << "2) Ejercicios de intervalos(GRADOS).\n";
+	cout << "3) Ejercicios de intervalos(NOTAS).\n";
+	cout << "4) Ejercicios para reconocer escalas.\n";
+	cout << "5) Ejercicios para reconocer intervalos.\n";
+	cout << "6) Ejercicios para sexta aumentada.\n\n";
 }
 
 std::pair<short, short> getOptions(){
-	std::cout << "Que ejercicio desea?: ";
 	short selectOption {};
-	std::cin >> selectOption;
+
+	cout << "Que ejercicio desea?: ";
+	cin >> selectOption;
 	// if(std::cin.fail)			IMPLEMENTAR ESTO
-	std::cin.ignore(10, '\n');
+	cin.ignore(10, '\n');
 
-	std::cout << "Cuantos ejercicios solicita?: ";
 	short amountExercises {};
-	std::cin >> amountExercises;
-	std::cin.ignore(10, '\n');
 
-	std::cout << "\n";
+	cout << "Cuantos ejercicios solicita?: ";
+	cin >> amountExercises;
+	cin.ignore(10, '\n');
+
+	cout << "\n";
 	return {selectOption, amountExercises};
 }
 
 short requestAmountElements()
 {
-	std::cout<<"Cuantos elementos necesita: ";
 	short amountElements {};
-	std::cin >> amountElements;
-	std::cin.ignore(10, '\n');
-	std::cout<<"\n";
+	
+	cout<<"Cuantos elementos necesita: ";
+	cin >> amountElements;
+	cin.ignore(10, '\n');
+	
+	cout<<"\n";
 	return amountElements;
 }
 
 int main(){
 	Scale* nova = Scale::getScale();
-	bool Repetir = false;
+	bool repeat = false;
 	
 	do{
-		system("cls");
+		//system("clear");
+		cout << "\033[2J\033[H";
+		
 		printMenu();
 		auto [selectOption, amountExercises] = getOptions();
 		
@@ -81,11 +91,13 @@ int main(){
 				break;
 
 			default:
-				system("cls");
-				std::cout<<"\a\n\tError de solicitud.\n Vuelve a intentarlo.\n"<<std::endl;
+				//system("clear");
+				cout << "\033[2J\033[H";
+				cout <<"\a\n\tError de solicitud.\n Vuelve a intentarlo.\n" <<std::endl;
 		}
-		std::cout << "\nDesea otro ejercicio?(1 = si || 0 = no): ";
-		std::cin>>Repetir;
-		std::cin.ignore(10, '\n');
-	}while(Repetir);
+		cout <<"\nDesea volver a iniciar?(1 = si || 0 = no): ";
+		cin >>repeat;
+		cin.ignore(10, '\n');
+		
+	}while(repeat);
 }

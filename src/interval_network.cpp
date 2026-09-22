@@ -1,5 +1,6 @@
 #include "interval_network.h"
 #include <stdexcept>
+#include <string>
 
 specificIntervalName::specificIntervalName(std::string name,
                                            specificIntervalName* up,
@@ -78,11 +79,11 @@ std::string IntervalNetwork::calculateInterval(int desviation) {
     }
 
     if (desviation < 0){
-        for (int i; i<std::abs(desviation); i++){
+        for (int i=0; i<std::abs(desviation); i++){
             down();
         }
     }else{
-        for (int i; i<std::abs(desviation); i++){
+        for (int i=0; i<std::abs(desviation); i++){
             up();
         }
     }

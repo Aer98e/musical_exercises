@@ -1,7 +1,11 @@
 #include "music_utils.h"
 #include "data_music.h"
+
 #include <random>
 #include <cstddef>
+#include <vector>
+#include <string>
+#include <utility>
 
 int generate_rand_number(int max, int min){
     //Los margenes son inclusivos

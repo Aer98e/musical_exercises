@@ -7,16 +7,6 @@
 
 namespace dtMusic
 {
-    std::vector<Nota_c> notesObjects = {
-                            Nota_c{"Do", 0},
-                            Nota_c{"Re", 2},
-                            Nota_c{"Mi", 4},
-                            Nota_c{"Fa", 5},
-                            Nota_c{"Sol", 7},
-                            Nota_c{"La", 9},
-                            Nota_c{"Si", 11}
-                        };
-
     std::vector<std::string> noteNames = {
                             "Do", "Re", "Mi", "Fa", "Sol", "La", "Si",
                             "Do#", "Re#", "Mi#", "Fa#", "Sol#", "La#", "Si#",
@@ -38,8 +28,8 @@ namespace dtMusic
     std::vector<std::string> intervals = {
                         "Segunda mayor", "Segunda menor",    //"Segunda aumentada", "Segunda disminuida", 
 			            "Tercera mayor", "Tercera menor",    //"Tercera aumentada", "Tercera disminuida", 
-			            "Cuarta justa",  "Cuarta aumentada", //"Cuarta disminuida", 
-			            "Quinta justa",                      "Quinta disminuida", 
+			            "Cuarta justa",                     "Cuarta aumentada",     //"Cuarta disminuida", 
+                        "Quinta justa",                                        "Quinta disminuida", 
 			            "Sexta mayor",   "Sexta menor",      "Sexta aumentada",    //"Sexta disminuida",
 			            "Septima mayor", "Septima menor",    //"Septima aumentada",  "Septima disminuida",
 			            "Octava justa",  //"Octava aumentada", "Octava disminuida"

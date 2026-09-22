@@ -23,7 +23,6 @@ enum class Mode { Mayor, Justo };
 
 class IntervalNetwork {
 public:
-    IntervalNetwork();
     static IntervalNetwork& getInstance();
     void selectMode(Mode mode);
     void up();
@@ -31,6 +30,7 @@ public:
     std::string calculateInterval(int desviation);
     Mode getMode();
 private:
+    IntervalNetwork();
     Mode workingMode;
     specificIntervalName major;
     specificIntervalName minor;

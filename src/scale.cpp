@@ -1,8 +1,11 @@
 #include "scale.h"
-#include <iostream>
-#include <stdexcept>
 #include "note.h"
 #include "music_utils.h"
+
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 Scale* Scale::scaleBase = nullptr;
 short Scale::size {0};
@@ -16,6 +19,8 @@ Scale::Scale() : selectedNote(nullptr) {
     addNote("La", 9);
     addNote("Si", 11);
     reassignGrades(1);
+    // La primera nota en la escala sera selectedNote,
+    // por lo que la numeración de grados la tomará como grado 1.
 }
 
 Scale* Scale::getScale() {
@@ -40,6 +45,8 @@ void Scale::selectPreviousNote(int steps) {
 Note* Scale::getSelectedNote() { return selectedNote; }
 
 void Scale::reassignGrades(short value) {
+    //veo que la funcion reasigna grados partiendo del grado indicado,
+    // podriamos hacer que naturalmente comience en 1 a menos que se especifique otro valor.
     short gradeValue {value};
     Note* temp = selectedNote;
     for (int i = 0; i < this->size; i++) {
@@ -52,10 +59,13 @@ void Scale::reassignGrades(short value) {
 
 Note* Scale::getBeginning(){
     Note *temp = selectedNote;
-    while ( temp->getGradeValue() != 1 ){
+    for (int i = 0; i < size; i++){
+        if ( temp->getGradeValue() == 1 ){
+            return temp;
+        }
         temp = temp->getNextPtr();
     }
-    return temp;
+    throw std::runtime_error("Error: No se encontro el grado 1 en la escala, falta inicializar.");
 }
 
 void Scale::goBeginning(){
@@ -85,6 +95,7 @@ void Scale::addNote(std::string name, int natural) {
 short Scale::getSize() { return size; }
 
 void Scale::applyScalePattern(std::vector<int> pattern, int initialModification) {
+    // Al aplicar el patron usa la SelectedNote como primer grado de la escala a formar.
     if (static_cast<int>(pattern.size()) != size) {
         throw std::invalid_argument("El tamaño del patrón no es aplicable en la escala.");
     }
@@ -108,7 +119,7 @@ void Scale::applyScalePattern(std::vector<int> pattern, int initialModification)
     Note* temp = selectedNote;
     for (int value : firstApply) {
         int secondApply {value - temp->getValuePitch()};
-        if (secondApply > 2) { secondApply -= 12; }
+        if (secondApply > 2) { secondApply -= 12; } //no sé por que funciona con valores mayores a 2.
         temp->setPitchVariation((short)secondApply);
         temp = temp->getNextPtr();
     }
@@ -123,13 +134,13 @@ void Scale::resetPitchVariations() {
 
 void Scale::print() {
     Note* temp = getBeginning();
+    std::string scale{};
 
-    for (int i = 0; i < size; i++) {
-        std::cout << temp->getName() << "("
-                  << temp->getGradeName() << ")" << " - ";
+    for (int i = 0; i <= size; i++) {
+        scale += temp->getName() + " ";
         temp = temp->getNextPtr();
     }
-    std::cout << "\n";
+    return scale;
 }
 
 std::vector<int> Scale::listPitchValues() {
