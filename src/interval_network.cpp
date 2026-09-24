@@ -1,4 +1,4 @@
-#include "interval_network.h"
+#include "interval_network.hpp"
 #include <stdexcept>
 #include <string>
 

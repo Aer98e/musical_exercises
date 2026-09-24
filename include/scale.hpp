@@ -20,7 +20,7 @@ public:
     short getSize();
     void applyScalePattern(std::vector<int> pattern, int initialModification=0);
     void resetPitchVariations();
-    void print();
+    std::string printScale();
     std::vector<int> listPitchValues();
     Note* randNote();
 private:

@@ -1,5 +1,5 @@
-#include "music_utils.h"
-#include "data_music.h"
+#include "music_utils.hpp"
+#include "data_music.hpp"
 
 #include <random>
 #include <cstddef>

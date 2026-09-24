@@ -1,4 +1,4 @@
-#include "note.h"
+#include "note.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <string>

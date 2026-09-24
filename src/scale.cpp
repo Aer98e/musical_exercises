@@ -1,6 +1,6 @@
-#include "scale.h"
-#include "note.h"
-#include "music_utils.h"
+#include "scale.hpp"
+#include "note.hpp"
+#include "music_utils.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -132,7 +132,7 @@ void Scale::resetPitchVariations() {
     }
 }
 
-void Scale::print() {
+std::string Scale::printScale() {
     Note* temp = getBeginning();
     std::string scale{};
 
