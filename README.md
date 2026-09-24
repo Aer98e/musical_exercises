@@ -1,5 +1,8 @@
 # Generador de Ejercicios Musicales 🎶
 
+## Nota Importante
+Despuesd e la última actualización para integración con un proyecto en flutter la interfaz no está preparada para uso en consola, revisar /src/exercises_functions.cpp si se requiere utilizar alguno de los ejercicios.
+
 ## Descripción
 Este proyecto en C++ implementa una serie de **ejercicios interactivos de teoría musical**, incluyendo escalas, intervalos y acordes especiales.  
 El programa ofrece un menú en consola donde el usuario puede seleccionar el tipo de ejercicio y la cantidad de ejemplos a practicar.
