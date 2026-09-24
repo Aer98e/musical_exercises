@@ -1,5 +1,8 @@
 .vscode/
 proyect_08052025/
+build_android_arm64-v8a/
+build_android_armeabi-v7a/
+build_android_x86_64/
 bin/
 build/
 build_o2/

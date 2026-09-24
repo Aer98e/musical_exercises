@@ -1,15 +1,15 @@
 // Headers del proyecto (necesarios para ejecutar la lógica de las funciones)
-#include "scale.h"
-#include "note.h"
-#include "data_music.h"
-#include "music_utils.h"
-#include "interval_network.h"
+#include "scale.hpp"
+#include "note.hpp"
+#include "data_music.hpp"
+#include "music_utils.hpp"
+#include "interval_network.hpp"
 
 // Librerías estándar que utilices en las funciones
 #include <iostream>
 #include <vector>
 #include <string>
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 
 using json = nlohmann::json;
 
@@ -35,7 +35,7 @@ std::string byWriteScales_Nova(int amount){
             {"direction", dtMusic::directions[direction]},
             {"noteName", temp -> getName()},
             {"noteGrade", temp -> getGradeName()},
-            {"scale", nova -> print()}
+            {"scale", nova -> printScale()}
         };
 
         results.push_back(item);
@@ -43,7 +43,7 @@ std::string byWriteScales_Nova(int amount){
 	return results.dump();
 }
 
-std::pair<std::string, int> compareIntervals(Note* first, Note* second){
+std::pair<int, std::string> compareIntervals(Note* first, Note* second){
 	int generalName { (second->getGradeValue() - first->getGradeValue()) + 1};
 	if (generalName < 2){ generalName+=7; }
 
@@ -73,7 +73,7 @@ std::pair<std::string, int> compareIntervals(Note* first, Note* second){
 	std::string specificName = net.calculateInterval(desviation);
 	
 
-	return {specificName, generalName};
+	return {generalName, specificName};
 }
 
 std::string byRecognizeIntervalsGrades_Nova(int amount){
@@ -92,7 +92,7 @@ std::string byRecognizeIntervalsGrades_Nova(int amount){
 				{"firstGrade", firstNote -> getGradeName()},
 				{"secondGrade", secondNote -> getGradeName()},
 				{"ansGeneralName", generalName},
-				{"ansSpecificName",specificName)}
+				{"ansSpecificName", specificName}
 			};
 			results.push_back(item);
 	}
@@ -112,12 +112,24 @@ std::string byRecognizeIntervalsNotes_Nova(int amount, int octaveMin, int octave
 
 		Note* firstNote = nova -> randNote();
 		Note* secondNote = nova -> randNote();
-
+		
+                int firstOctave = generate_rand_number(octaveMax, octaveMin);
+                int secondOctave = generate_rand_number(octaveMax, octaveMin);
+                std::pair<int, std::string> intervalAllName{};
+                if (firstOctave < secondOctave){
+                  intervalAllName = compareIntervals(firstNote, secondNote);
+                }
+                else{
+                  intervalAllName = compareIntervals(secondNote, firstNote);
+                }
+		auto [generalName, specificName] = intervalAllName;
 		json item = {
-			{"firstNote", firstNote->getName},
-			{"secondNote", secondNote->getName},
-			{"firstOctave", generate_rand_number(octaveMax, octaveMin)},
-			{"secondOctave",  generate_rand_number(octaveMax, octaveMin)}
+			{"firstNote", firstNote->getName()},
+			{"secondNote", secondNote->getName()},
+			{"firstOctave", firstOctave},
+			{"secondOctave",  secondOctave},
+			{"ansGeneralName", generalName},
+			{"ansSpecificName", specificName}
 		};
 
 		results.push_back(item);
@@ -160,8 +172,8 @@ std::string byFormIntervals(int amount, int numElements){
 
 		json intervals = json::array();
 		
-		for(;counter>1;counter--){
-			randIdxInterval = generate_rand_number(sizeIntervalsList-1);
+		for(; counter > 0; counter--){
+			int randIdxInterval = generate_rand_number(sizeIntervalsList-1);
 			intervals.push_back(dtMusic::intervals[randIdxInterval]);
 		}
 

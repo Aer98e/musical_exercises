@@ -1,30 +1,41 @@
-cmake_minimum_required(VERSION 3.15)
-project(musicalExercises VERSION 2.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.20)
+project(musicalExercises VERSION 3.0 LANGUAGES CXX)
 
 add_library(generic INTERFACE)
 target_include_directories(generic INTERFACE include)
 target_compile_features(generic INTERFACE cxx_std_20)
-target_compile_options(generic INTERFACE -Wall -Wextra -Werror)
+target_compile_options(generic INTERFACE
+    $<$<CONFIG:Release>:-O2>
+    $<$<CONFIG:Release>:-flto>
+    $<$<CONFIG:Debug>:-Wall>
+    $<$<CONFIG:Debug>:-Wextra>
+    $<$<CONFIG:Debug>:-Werror>
+    $<$<CONFIG:Debug>:-g>
+)
 
-add_library(musicalObjects STATIC
+set(SOURCE_FILES
+    src/api_flutter.cpp
+    
+    src/exercises_functions.cpp
+    
+    src/data_music.cpp
+    src/music_utils.cpp
+    
     src/note.cpp
     src/scale.cpp
     src/interval_network.cpp
-    )
-target_link_libraries(musicalObjects PUBLIC generic)
+)
 
-add_library(musicalData STATIC src/data_music.cpp)
-target_link_libraries(musicalData PUBLIC generic)
+add_library(music_core SHARED ${SOURCE_FILES})
+target_link_libraries(music_core PRIVATE generic)
 
-add_library(musicalExercises STATIC src/exercises_functions.cpp)
-target_link_libraries(musicalExercises PUBLIC musicalObjects)
+target_include_directories(music_core PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann
+)
 
-add_library(util STATIC src/music_utils.cpp)
-target_link_libraries(util PUBLIC generic)
-
-add_executable(TeoricExercises src/main.cpp)
-target_link_libraries(TeoricExercises PRIVATE musicalObjects musicalExercises util musicalData)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set_target_properties(music_core PROPERTIES
+    CXX_VISIBILITY_PRESET hidden
+    VISIBILITY_INLINES_HIDDEN ON
+    INTERPROCEDURAL_OPTIMIZATION_RELEASE ON
+)

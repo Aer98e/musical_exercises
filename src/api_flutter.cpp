@@ -1,11 +1,12 @@
-#include "exercises_functions.h"
+#include "exercises_functions.hpp"
+#include "api_flutter.hpp"
 
 #include <string>
 #include <cstdlib>
 #include <cstring>
 
-const char* sendStringToHeap(const std::string& str){
-    char* spaceToString = static_cast<char*>(std::malloc(str.lenght() + 1))
+char* sendStringToHeap(const std::string& str){
+    char* spaceToString = static_cast<char*>(std::malloc(str.length() + 1));
     
     if(spaceToString == nullptr){
         return nullptr;
@@ -15,7 +16,6 @@ const char* sendStringToHeap(const std::string& str){
     return spaceToString;
 }
 
-extern "C"{
     char* byWriteScales_C(int amount){
         std::string jsonExercises = byWriteScales_Nova(amount);
         return sendStringToHeap(jsonExercises);
@@ -44,5 +44,5 @@ extern "C"{
     void freeCharPointer(char* ptr){
         std::free(ptr);
     }
-}
+
 
